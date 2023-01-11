@@ -11,8 +11,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class Main {
 
     public static void searchword(String browser,String Keyword){
-        WebDriver driver = null;
         if(browser=="firefox" || browser =="chrome" || browser=="edge") {
+            WebDriver driver = null;
             if (browser.equalsIgnoreCase("chrome")) {
                 driver = new ChromeDriver();
 
@@ -39,7 +39,7 @@ public class Main {
     public static void main(String[] args) {
 
       //String browser = "firefox";
-      searchword("safari", "saad");
+      searchword("chrome", "saad");
 
 
     }
