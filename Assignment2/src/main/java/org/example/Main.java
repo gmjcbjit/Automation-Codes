@@ -5,12 +5,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class Main {
     static WebDriver driver;
 
-    public static void radioButton(){
+    //this method selects an option for the radio button
+    public static void setRadioButton(){
 
         WebElement radioElement = driver.findElement(By.xpath("//div[@class='et_pb_blurb_description']//form//input[@value='male']"));
 
@@ -20,12 +23,14 @@ public class Main {
         if (selectState == false) {
             radioElement.click();
         }
-        driver.close();
+        //driver.close();
+        scrollTo("checkbox");
+        setCheckbox();
     }
 
-    public static void checkbox(){
-        WebElement checkBoxSelected =
-                driver.findElement(By.cssSelector("input[value='Bike']"));
+    //this method selects an option for the checkbox
+    public static void setCheckbox(){
+        WebElement checkBoxSelected = driver.findElement(By.cssSelector("input[value='Bike']"));
 
         boolean isSelected = checkBoxSelected.isSelected();
         System.out.println("Checkbox is selected");
@@ -33,26 +38,51 @@ public class Main {
         if (isSelected == false) {
             checkBoxSelected.click();
         }
-        driver.close();
+        //driver.close();
+        scrollTo("dropdown");
+        setDropdown();
     }
 
-    public static void dropdown(){
+    //this method works for selecting an option for the dropdown
+    public static void setDropdown(){
         Select select = new Select(driver.findElement(By.tagName("select")));
         System.out.println("dropdown is selected");
-// Select the option with value "6"
         select.selectByIndex(2);
-        driver.close();
+        //driver.close();
     }
-    public static void scrollTo(String locator){
-        driver = new ChromeDriver();
-        String URL = "https://ultimateqa.com/simple-html-elements-for-automation/";
-        driver.get(URL);
+    public static void setBrowser(String browser) {
 
+        //this condition checks for valid browsers
+
+        if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("chrome") || browser.equalsIgnoreCase("edge")) {
+
+            if (browser.equalsIgnoreCase("chrome")) {
+                driver = new ChromeDriver();
+
+            } else if (browser.equalsIgnoreCase("firefox")) {
+                driver = new FirefoxDriver();
+
+            } else if (browser.equalsIgnoreCase("edge")) {
+                driver = new EdgeDriver();
+            }
+
+            //driver = new ChromeDriver();
+            String URL = "https://ultimateqa.com/simple-html-elements-for-automation/";
+            driver.get(URL);
+        } else {
+            System.out.println("The browser is not in scope");
+        }
+        scrollTo("radio");
+        setRadioButton();
+    }
+        //this portion works for different locators
+    public static void scrollTo(String locator){
         if(locator.equalsIgnoreCase("radio") || locator.equalsIgnoreCase("button2")|| locator.equalsIgnoreCase("checkbox")||locator.equalsIgnoreCase("dropdown")){
         WebElement element=null;
         if(locator.equalsIgnoreCase("radio")){
              element = driver.findElement(By.xpath("//span[contains(text(),'Radio buttons')]"));
             System.out.println("Radio Button is Scrolled");
+
         }
         else if(locator.equalsIgnoreCase("button2")){
              element = driver.findElement(By.xpath("//span[contains(text(), 'Button 2')]"));
@@ -61,10 +91,12 @@ public class Main {
         else if(locator.equalsIgnoreCase("Checkbox")){
              element = driver.findElement(By.xpath("//span[contains(text(), 'Checkboxes')]"));
             System.out.println("Checkbox is Scrolled");
+
         }
         else if(locator.equalsIgnoreCase("dropdown")){
              element = driver.findElement(By.xpath("//span[contains(text(), 'Dropdown')]"));
             System.out.println("Dropdown is Scrolled");
+
         }
         JavascriptExecutor js=(JavascriptExecutor)driver;
         js.executeScript("arguments[0].scrollIntoView()", element);
@@ -103,11 +135,11 @@ public class Main {
 //    }
     public static void main(String[] args) {
 
-      //String browser = "firefox";
-        scrollTo("button");
-        //radioButton();
-        //checkbox();
-        //dropdown();
+        String loc = "dropdown";
+        String browser = "chrome";
+       // scrollTo("radio",browser);
+        setBrowser(browser);
+        driver.close();
 
     }
 }
